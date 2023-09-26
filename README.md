@@ -1,1 +1,1 @@
-# blitzortung-proxy
+# blitzortung-compose
