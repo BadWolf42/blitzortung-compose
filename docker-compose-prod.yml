@@ -14,25 +14,23 @@ services:
     restart: always
 
   collector:
-    image: badwolf42/blitzortung-collector:latest-dev
+    image: badwolf42/blitzortung-collector:latest
     environment:
       <<: *commonEnvironment
-    #  DEBUG: True
     depends_on:
       - db
     restart: always
 
   api:
-    image: badwolf42/blitzortung-api:latest-dev
+    image: badwolf42/blitzortung-api:latest
     environment:
       <<: *commonEnvironment
       FORWARDED_ALLOW_IPS: "192.168.16.10,192.168.16.121"
-    #  DEBUG: True
     ports:
-      - 7374-7375:8000
+      - 12191-12193:8000
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 3
     depends_on:
       - db
     restart: always

@@ -1,0 +1,41 @@
+version: "3.8"
+x-environment: &commonEnvironment
+  POSTGRES_USER: pguser
+  POSTGRES_PASSWORD: pgsecret
+  POSTGRES_DB: blitzdb
+
+services:
+  db:
+    image: postgres:15.0-alpine
+    environment:
+      <<: *commonEnvironment
+    volumes:
+      - db:/var/lib/postgresql/data
+    restart: always
+
+  collector:
+    image: badwolf42/blitzortung-collector:latest-dev
+    environment:
+      <<: *commonEnvironment
+      DEBUG: True
+    depends_on:
+      - db
+    restart: always
+
+  api:
+    image: badwolf42/blitzortung-api:latest-dev
+    environment:
+      <<: *commonEnvironment
+      FORWARDED_ALLOW_IPS: "192.168.16.10,192.168.16.121"
+      DEBUG: True
+    ports:
+      - 7374-7375:8000
+    deploy:
+      mode: replicated
+      replicas: 2
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  db:
