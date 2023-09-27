@@ -9,6 +9,8 @@ services:
     image: postgres:15.0-alpine
     environment:
       <<: *commonEnvironment
+    ports:
+      - 7372:5432
     volumes:
       - db:/var/lib/postgresql/data
     restart: always
