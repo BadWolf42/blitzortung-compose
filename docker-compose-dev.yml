@@ -15,6 +15,18 @@ services:
       - db:/var/lib/postgresql/data
     restart: always
 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - 7373:80
+    depends_on:
+      - db
+
   collector:
     image: badwolf42/blitzortung-collector:latest-dev
     environment:
